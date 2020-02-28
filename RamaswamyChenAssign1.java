@@ -5,7 +5,7 @@ import java.io.*;
 public class RamaswamyChenAssign1 {
 
 	static Random generator;
-
+	static double max = 0.0;
 	
 	public static void main(String[] args){
 		
@@ -20,10 +20,10 @@ public class RamaswamyChenAssign1 {
 		
 		for (int i = 0; i < numTrials; i++){
 			float MST = FindMST(numPoints, dimension);
-			System.out.println(MST);
 			totalWeight += MST;
 		}
-		System.out.println(totalWeight);
+		System.out.println(max);
+//		System.out.println(totalWeight);
 		
 		
 		System.out.print(totalWeight/numTrials);
@@ -51,7 +51,7 @@ public class RamaswamyChenAssign1 {
 		
 		for (int i = 1; i < numPoints; i++)
 		{
-			heap.add(new Edge (generateWeight (numDimensions), 0, i));
+			heap.add(new Edge (generateWeight (numDimensions), i));
 		}
 		
 		
@@ -61,6 +61,8 @@ public class RamaswamyChenAssign1 {
 			Edge temp = heap.poll();
 			
 			if (!visited[temp.getSndVertex()]) {
+				if (max < temp.getWeight())
+					max = temp.getWeight();
 				treeWeight += temp.weight;
 				visited[temp.getSndVertex()] = true;
 				
@@ -68,8 +70,8 @@ public class RamaswamyChenAssign1 {
 					if (!visited[i])
 					{
 						float tempWeight = generateWeight(numDimensions);
-						if (tempWeight < 0.625 * Math.sqrt(numDimensions))
-							heap.add(new Edge (tempWeight, temp.getFstVertex(), i));
+						if (tempWeight < 0.0065)
+							heap.add(new Edge (tempWeight, i));
 					}
 				}
 				
@@ -78,27 +80,23 @@ public class RamaswamyChenAssign1 {
 			
 		}
 		
-		
+		if (edgeCount < numPoints - 1)
+			System.out.println("bound too low");
 		
 		return treeWeight;
 	}
 	
 	static class Edge implements Comparable{
 		float weight;
-		int fstVertex, sndVertex;
+		int sndVertex;
 		
-		public Edge (float weightParam, int fstVertexParam, int sndVertexParam){
+		public Edge (float weightParam, int sndVertexParam){
 			weight = weightParam;
-			fstVertex = fstVertexParam;
 			sndVertex = sndVertexParam;
 		}
 		
 		public float getWeight(){
 			return weight;
-		}
-		
-		public int getFstVertex(){
-			return fstVertex;
 		}
 		
 		public int getSndVertex(){
