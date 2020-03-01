@@ -1,0 +1,22 @@
+JAVAC=javac
+sources = $(wildcard *.java)
+classes = $(sources:.java=.class)
+
+all: randmst
+
+randmst: $(classes)
+
+%.class: %.java
+    $(JAVAC) $<
+
+jar:    
+    @echo "Manifest-Version: 1.0" > manifest.txt
+    @echo "Class-Path: ." >> manifest.txt
+    @echo "Main-Class: randmst" >> manifest.txt
+    @echo "" >> manifest.txt
+
+    jar -cmf manifest.txt randmst.jar $(classes)
+
+clean:
+    rm -f *.class
+    rm manifest.txt
