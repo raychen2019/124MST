@@ -14,6 +14,9 @@ public class randmst {
 		int numTrials = Integer.parseInt(args[2]);
 		int dimension = Integer.parseInt(args[3]);
 		
+		if (dimension == 0)
+			dimension = 1;
+		
 		generator = new Random(seedNum);
 		
 		float totalWeight = 0;
